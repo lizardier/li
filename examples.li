@@ -1,0 +1,213 @@
+# --- Data Types --- #
+
+true false # boolean
+
+13 # decimal
+0xfff # hex
+1.6*10^-6 # quantum
+0b0010 # binary
+0o1234 # octal
+
+"Hello, World!" # string
+foo # identifier
+
+[1, 2, 3] 1, 2, 3 # array
+[name: "Alex"; age: 13] # hash
+
+12$ 24₽ 45฿ # money
+
+# --- Instance Variables --- #
+this # contains parent
+self # contains something, where it written
+
+foo(self) # here self contains [ name: "foo"; argumentsLength: 1 etc...]
+
+# --- Functions --- #
+foo(x, y)
+  x + y
+
+foo(1, 2) # => 3
+
+# --- Side Functions --- #
+foo(<x, >y)
+  x + y
+
+1 foo 2 # => 3
+
+# --- Classes --- #
+Foo
+  bar(x, y)
+    x + y
+  baz(<x, >y)
+    x - y
+
+Foo().bar(1, 2) # => 3
+3 Foo().baz 2 # => 1
+
+# initializer
+Person(first_name, last_name)
+  name = fist_name + " " + last_name
+  age = 0
+  
+  name?
+    $name
+
+  age=(number)
+    $age = number
+
+  age?
+    $age
+
+alex = Person("Alexey", "Yurchenko")
+
+alex.name? # => Alexey Yurchenko
+alex.age? # => 0
+
+alex.age = 13
+alex.age? # => 13
+
+# inheritance of classes
+Foo(x)
+  inc
+    x++
+
+Bar(y)
+  super # prepends arguments of parent class to self initializer
+  
+  dec
+    x--
+  add
+    x + y
+
+Bar << Foo
+
+Bar(1, 2).dec # => 0
+Bar(1, 2).inc # => 2
+Bar(1, 2).add # => 3
+
+# allows multi-inheritance
+SomeClass << Foo
+SomeClass << Bar
+
+# and finished inheritance
+Foo
+  break # for make empty skeleton
+  
+Foo << alex # our variable created in demo of initializer
+Foo.name # => Alexey Yurchenko
+Foo.age? # 13
+
+# side class arguments
+Add(<x, >y)
+  result?
+    $x + $y
+
+addition = 1 Add 2
+addition.result? # => 3
+
+# --- Importing --- #
+import kernel/*
+
+# --- Exporting --- #
+import kernel/*
+# we need to call
+Kernel.something
+# but
+this << Kernel
+# does amazingly great work
+something # now works
+
+# --- Argument Templates(Interfaces) --- #
+foo([width, height], rest)
+  width + height, rest
+
+foo([1, 2], "Hi") # => [3, "Hi"]
+
+# also works with hashes
+greeting([ name: ?; age: ? ])
+  "Hi, @{name}. You are @{string_of(age)} years old"
+
+i = [
+  name: "Alexey Yurchenko";
+  age: 13
+]
+print greeting(i) # => Hi, Alexey Yurchenko. You are 13 years old.
+
+# --- Aliases --- #
+foo(x, y)
+  x + y
+
+alias xpy(x, y)
+  foo(x, y)
+
+# or
+
+alias xpy << foo
+
+xpy 1, 2 # => 3
+
+# --- If's --- #
+if true
+  print "ok"
+else
+  print "not ok"
+
+if true && false
+  print "are u hacker??"
+else
+  print "not ok"
+
+# --- Case-ifs --- #
+weather = "Sunny"
+case weather if
+  /[Ss]unny/
+    print "Yo!"
+  /[Rr]ainy/
+    print "Nooo!"
+  /[Ww]indy/
+    print "Oh!"
+  else
+    print "Crap! @{self}..." # `self` now is value of weather
+
+# => "Yo!"
+
+# --- Times loop --- #
+"Hello" * 5 # => HelloHelloHelloHelloHello
+5 * 4 # 20
+
+5 *
+  print "Hi"
+# prints hi 5 times
+
+5, i *
+  print i
+
+# prints 0, 1, 2, 3, 4
+
+# --- For-in loop --- #
+array = [1, 2, 3]
+for num in array
+  print num
+
+# prints 1, 2, 3
+for num, i in array
+  print i, num
+
+# prints 1, 0; 2, 1; 3, 2;
+
+string = "Hi"
+for char in string
+  print char
+
+# prints H i
+
+# --- Built-in functions --- #
+print # alias of Kernel::Writer.println
+putc # alias of Kernel::Writer.print
++ # alias of Kernel::Addition
+- # alias of Kernel::Subtraction
+* # alias of Kernel::Multiplication
+/ # alias of Kenrel::Division
+= # alias of Kernel::Variable.define
+
+
