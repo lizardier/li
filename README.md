@@ -1,7 +1,5 @@
-# About
-Programming Language, that compiles to JavaScript.
+# Lizard
+Language concept, that compiles to Assembly, and designed to be replacement of C.
 
-# Specs
-If you want to see grammar, open `Lizard Specs.md` file.
-
-### brevity is the soul of wit
+# Today it's just a concept
+If you able and want to help us(me) to make this project: fork, make commit, don't wait!
